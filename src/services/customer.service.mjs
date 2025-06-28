@@ -248,6 +248,8 @@ const CustomerService = {
   },
   cancelOrder: async (req) => {
     const { order_id } = req.params;
+    const { cancel_reason } = validate(OrderSchema.cancel, req.body);
+
     const order = await OrderQuery.getOrderJoinedById(order_id);
 
     if (!order[0]) throw new NotFoundError("Failed, order not found");
@@ -264,7 +266,7 @@ const CustomerService = {
         `Failed, order status is already [${order[0].status}]`
       );
 
-    await OrderQuery.cancelOrder(order_id);
+    await OrderQuery.cancelOrder(order_id, cancel_reason);
     if (order[0].coupon_code) {
       const coupon = await CouponQuery.get(order[0].coupon_code);
       if (coupon.is_used === -1) {
@@ -274,7 +276,8 @@ const CustomerService = {
       }
     }
 
-    const ord = formatOrdersFromDb(order)[0];
+    const _order = await OrderQuery.getOrderJoinedById(order_id);
+    const ord = formatOrdersFromDb(_order)[0];
     await sendOrderCancellationConfirmationToCustomer(ord);
     await sendOrderCancellationConfirmationToLaundry(ord);
 

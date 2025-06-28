@@ -45,7 +45,7 @@ export const sendOrderAssignedPengantaranToDriver = async (ord) => {
 export const sendOrderCancellationConfirmationToCustomer = async (ord) => {
   const payload = {
     jid: `${ord.customer.telephone}@s.whatsapp.net`,
-    content: `*[Pembatalan Pesanan]*\n\nHalo ${ord.customer.name}, Terima kasih telah menggunakan layanan AkuCuciin.\n\nPesanan anda dengan ID: _${ord.id}_ berhasil dibatalkan.\n\n====================\n\n_Pesan ini dibuat otomatis oleh sistem AkuCuciin._\nID Pesanan: _${ord.id}_`,
+    content: `*[Pembatalan Pesanan]*\n\nHalo ${ord.customer.name}, Terima kasih telah menggunakan layanan AkuCuciin.\n\nPesanan anda dengan ID: _${ord.id}_ berhasil dibatalkan.\n\nAlasan : "${ord.cancel_reason}".\n\n====================\n\n_Pesan ini dibuat otomatis oleh sistem AkuCuciin._\nID Pesanan: _${ord.id}_`,
   };
 
   const xSignature = generateXSignature(payload);
@@ -60,7 +60,7 @@ export const sendOrderCancellationConfirmationToCustomer = async (ord) => {
 export const sendOrderCancellationConfirmationToLaundry = async (ord) => {
   const payload = {
     jid: `${ord.laundry_partner.telephone}@s.whatsapp.net`,
-    content: `*[Pembatalan Pesanan]*\n\nHalo ${ord.laundry_partner.name},\n\nPesanan customer ${ord.customer.name} dengan ID: _${ord.id}_ dibatalkan oleh customer.\n\n====================\n\n_Pesan ini dibuat otomatis oleh sistem AkuCuciin._\nID Pesanan: _${ord.id}_`,
+    content: `*[Pembatalan Pesanan]*\n\nHalo ${ord.laundry_partner.name},\n\nPesanan customer ${ord.customer.name} dengan ID: _${ord.id}_ dibatalkan oleh customer.\n\nAlasan : "${ord.cancel_reason}".\n\n====================\n\n_Pesan ini dibuat otomatis oleh sistem AkuCuciin._\nID Pesanan: _${ord.id}_`,
   };
 
   const xSignature = generateXSignature(payload);

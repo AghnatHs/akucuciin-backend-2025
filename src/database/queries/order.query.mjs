@@ -103,6 +103,7 @@ const OrderQuery = {
         d.telephone AS d_telephone,
         o.content ,
         o.status,
+        o.cancel_reason,
         o.status_payment,
         o.maps_pinpoint,
         o.weight ,
@@ -162,6 +163,7 @@ const OrderQuery = {
         d.telephone AS d_telephone,
         o.content ,
         o.status,
+        o.cancel_reason,
         o.status_payment,
         o.maps_pinpoint,
         o.weight ,
@@ -215,6 +217,7 @@ const OrderQuery = {
         d.telephone AS d_telephone,
         o.content ,
         o.status,
+        o.cancel_reason,
         o.status_payment,
         o.maps_pinpoint,
         o.weight ,
@@ -266,6 +269,7 @@ const OrderQuery = {
         d.telephone AS d_telephone,
         o.content ,
         o.status,
+        o.cancel_reason,
         o.status_payment,
         o.maps_pinpoint,
         o.weight ,
@@ -319,6 +323,7 @@ const OrderQuery = {
         d.telephone AS d_telephone,
         o.content ,
         o.status,
+        o.cancel_reason,
         o.status_payment,
         o.maps_pinpoint,
         o.weight ,
@@ -385,14 +390,14 @@ const OrderQuery = {
       ]
     );
   },
-  cancelOrder: async function (order_id) {
+  cancelOrder: async function (order_id, cancel_reason) {
     const [results] = await db.query(
       `
       UPDATE orders
-      SET status = "batal", coupon_code = ""
+      SET status = "batal", coupon_code = "", cancel_reason = ?
       WHERE id = ?
       `,
-      [order_id]
+      [cancel_reason, order_id]
     );
     return results;
   },
