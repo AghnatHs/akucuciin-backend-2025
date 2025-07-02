@@ -1,6 +1,9 @@
 import Joi from 'joi';
 
 const OrderSchema = {
+  cancel: Joi.object({
+    cancel_reason: Joi.string().min(1).max(255).required(),
+  }),
   create: Joi.object({
     laundry_partner_id: Joi.string().required(),
     package_id: Joi.string().required(),
